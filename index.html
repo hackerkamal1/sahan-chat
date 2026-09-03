@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sahan Chat</title>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#101820;color:#eef4f7}
+    .app{max-width:760px;margin:auto;min-height:100vh;padding:18px}
+    header{display:flex;align-items:center;justify-content:space-between;padding:12px 0 24px}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:52px;height:52px;border-radius:16px;background:#1593b8;display:grid;place-items:center;font-size:28px}
+    h1{font-size:25px;margin:0}.sub{color:#aebcc4;margin-top:5px}
+    .card{background:#18242d;border:1px solid #263641;border-radius:22px;padding:20px}
+    #chat{min-height:420px;max-height:60vh;overflow-y:auto;padding-bottom:12px}
+    .msg{max-width:82%;padding:14px 16px;border-radius:18px;margin:12px 0;line-height:1.5;white-space:pre-wrap}
+    .bot{background:#22323d;border-bottom-left-radius:5px}
+    .user{background:#167e9d;margin-left:auto;border-bottom-right-radius:5px}
+    .quick{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+    .quick button{background:#22323d;color:#eaf3f6;border:1px solid #334854;padding:9px 12px;border-radius:20px}
+    .inputbar{display:flex;gap:10px;margin-top:14px}
+    input{flex:1;padding:16px;border-radius:16px;border:1px solid #38505e;background:#0e161c;color:white;font-size:16px}
+    button.send{border:0;border-radius:16px;background:#18a1c5;color:white;font-size:16px;font-weight:bold;padding:0 22px}
+    footer{text-align:center;color:#82929c;font-size:13px;padding:22px}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand">
+      <div class="logo">💬</div>
+      <div><h1>Sahan Chat</h1><div class="sub">Somali & English chatbot</div></div>
+    </div>
+  </header>
+
+  <main class="card">
+    <div id="chat">
+      <div class="msg bot">Salaan! 👋 Waxaan ahay Sahan Chat. Waxaad igula hadli kartaa Soomaali ama English. Maxaan kuu qaban karaa?</div>
+    </div>
+
+    <div class="quick">
+      <button onclick="ask('Sidee tahay?')">Sidee tahay?</button>
+      <button onclick="ask('What can you do?')">What can you do?</button>
+      <button onclick="ask('Maxaad jeceshahay?')">Maxaad jeceshahay?</button>
+    </div>
+
+    <div class="inputbar">
+      <input id="input" placeholder="Qor su'aashaada / Type your question" onkeydown="if(event.key==='Enter') send()">
+      <button class="send" onclick="send()">Dir ➤</button>
+    </div>
+  </main>
+  <footer>Sahan Chat • Somali & English</footer>
+</div>
+
+<script>
+const chat = document.getElementById('chat');
+const input = document.getElementById('input');
+
+function reply(q){
+  const t=q.toLowerCase();
+  if(t.includes('sidee tahay') || t.includes('how are you'))
+    return 'Waan fiicanahay, mahadsanid! 😊 Adiguna sidee tahay? / I am fine, thank you! 😊';
+  if(t.includes('maxaad jeceshahay') || t.includes('what do you like'))
+    return 'Waxaan jeclahay inaan dadka ka caawiyo su’aalaha, barashada, iyo luuqadaha. 😊';
+  if(t.includes('what can you do') || t.includes('maxaad qaban'))
+    return 'Waxaan kaa caawin karaa su’aalo guud, Soomaali iyo English, iyo waxbarasho.';
+  if(t.includes('hello') || t.includes('salaan') || t.includes('hi'))
+    return 'Salaan! 👋 Ku soo dhowow Sahan Chat. Sideen kuu caawin karaa?';
+  if(t.includes('english'))
+    return 'Sure! You can ask me in English. 😊';
+  return 'Waad mahadsan tahay! 😊 Tani waa nooca demo ee Sahan Chat. Waxaad ii qori kartaa su’aal kale Soomaali ama English.';
+}
+function add(text, who){
+  const d=document.createElement('div'); d.className='msg '+who; d.textContent=text;
+  chat.appendChild(d); chat.scrollTop=chat.scrollHeight;
+}
+function send(){
+  const q=input.value.trim(); if(!q) return;
+  add(q,'user'); input.value='';
+  setTimeout(()=>add(reply(q),'bot'),350);
+}
+function ask(q){ input.value=q; send(); }
+</script>
+</body>
+</html>
